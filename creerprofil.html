@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <style>
+        form {
+            border: solid 1px gray;
+            margin: auto;
+            width: 400px;
+        }
+        
+        body {
+            margin: auto;
+            margin-top: 250px;
+            background-color: gray;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="POST">
+        <legend>Créer profil</legend>
+        <label>Login :</label> <input type="text" name="login" required> <br/>
+        <label>Profil :</label> <input type="text" name="profil" required><br/>
+        <input type="submit" name="creer" value="créer">
+
+    </form>
+    <?php
+    		include('generer.php');
+    		extract($_POST);
+    		if (isset($submit)) {
+    			if ($profil == "") {
+    				echo "<h1>Veuiller choisir un profil</h1>";
+    			}
+    			else{
+    				$mot = mdp(8);
+    				$fichier = fopen("utilisateur", "a+");
+    				$a = verif($fichier, $login);
+    				if ($a == 0) {
+    					fputs($fichier, "$login;$profil;$mot;complete\n");
+    					echo "L'utilisateur $login a bien été ajouté avec le mot de passe $mot";
+    				}
+    				else
+    					echo "L'utilisateur existe";
+    				
+    				fclose($fichier);	
+    			}
+    		}
+    		
+    
+    	?>
+</body>
+
+</html>
